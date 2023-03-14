@@ -58,10 +58,40 @@ export const CustosProtocol = class {
   };
 
   getDelegate = async (): Promise<PublicKey | undefined> => {
-    const data = await this.delegationProgram.account.delegateAccount.all();
+    const data = await this.delegationProgram.account.delegateAccount.all([
+      {
+        memcmp: {
+          offset: 8,
+          bytes: this.signer.toBase58(),
+        },
+      },
+    ]);
     if (data.length === 0) {
       return;
     }
     return data[0].account.hotWallet;
   };
+
+
+
+  checkDelegate = async ():Promise<boolean> => {
+
+    const data = this.delegationProgram.account.delegateTokenAccount.all([
+      {
+        memcmp: {
+          offset: 8,
+          bytes: this.signer.toBase58(),
+        },
+      },
+    ]);
+
+    if(data.length == 0){
+      return false;
+    }
+
+    return true;
+  }
+
+
+
 };
