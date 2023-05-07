@@ -143,27 +143,4 @@ export const CustosProtocol = class {
 
     return data;
   };
-
-
-
-  checkDelegate = async ():Promise<boolean> => {
-
-    const data = this.delegationProgram.account.delegateTokenAccount.all([
-      {
-        memcmp: {
-          offset: 8,
-          bytes: this.signer.toBase58(),
-        },
-      },
-    ]);
-
-    if(data.length == 0){
-      return false;
-    }
-
-    return true;
-  }
-
-
-
 };
